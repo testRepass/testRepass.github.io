@@ -6,17 +6,33 @@
     <title>Repass</title>
     <link rel="stylesheet" type="text/css" href="styles.css">
     <script type="application/javascript">
-        // Check if WebAssembly is supported
-        if (typeof WebAssembly === "object" && typeof WebAssembly.instantiate === "function") {
-          console.log("Loading WASM bundle: composeApp_wasm.js");
-          var script = document.createElement("script");
-          script.src = "composeApp_wasm.js";
-          document.head.appendChild(script);
+        // Storing user's device details in a variable
+        let details = navigator.userAgent;
+
+        // Creating a regular expression containing some mobile devices keywords to search it in details string
+        let regexp = /iphone|kindle|ipad|Safari|AppleWebKit/i;
+
+        // Using test() method to search regexp in details, it returns boolean value
+        let isAppleDevice = regexp.test(details);
+
+        if (isAppleDevice) {
+            console.log("Loading JS bundle: composeApp_js.js");
+            var script = document.createElement("script");
+            script.src = "composeApp_js.js";
+            document.head.appendChild(script);
         } else {
-          console.log("Loading JS bundle: composeApp_js.js");
-          var script = document.createElement("script");
-          script.src = "composeApp_js.js";
-          document.head.appendChild(script);
+            // Check if WebAssembly is supported
+            if (typeof WebAssembly === "object" && typeof WebAssembly.instantiate === "function") {
+                console.log("Loading WASM bundle: composeApp_wasm.js");
+                var script = document.createElement("script");
+                script.src = "composeApp_wasm.js";
+                document.head.appendChild(script);
+            } else {
+                console.log("Loading JS bundle: composeApp_js.js");
+                var script = document.createElement("script");
+                script.src = "composeApp_js.js";
+                document.head.appendChild(script);
+            }
         }
     </script>
 </head>
